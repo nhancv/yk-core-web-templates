@@ -1,0 +1,12 @@
+{
+    "name": "nhancao/nc-core-stock-management",
+    "authors": [
+        {
+            "name": "Nhan Cao",
+            "email": "nhancv1992@gmail.com"
+        }
+    ],
+    "require": {
+    	"ext-mysql": "*"
+    }
+}
