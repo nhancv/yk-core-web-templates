@@ -15,31 +15,6 @@ angular.module('app.routes', [])
                 templateUrl: "front_end/partials/p_user/p_user.html",
                 controller: 'cUser'
             })
-            .state('customer', {
-                url: "/customer",
-                templateUrl: "front_end/partials/p_customer/p_customer.html",
-                controller: 'cCustomer'
-            })
-            .state('product', {
-                url: "/product",
-                templateUrl: "front_end/partials/p_product/p_product.html",
-                controller: 'cProduct'
-            })
-            .state('shipping', {
-                url: "/shipping",
-                templateUrl: "front_end/partials/p_shipping/p_shipping.html",
-                controller: 'cShipping'
-            })
-            .state('stock', {
-                url: "/stock",
-                templateUrl: "front_end/partials/p_stock/p_stock.html",
-                controller: 'cStock'
-            })
-            .state('transaction', {
-                url: "/transaction",
-                templateUrl: "front_end/partials/p_transaction/p_transaction.html",
-                controller: 'cTransaction'
-            })
     })
 
 
