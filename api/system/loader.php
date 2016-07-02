@@ -8,12 +8,11 @@
  */
 class Loader
 {
-    private static $baseFiles = [APP_DIR . 'models/db/MBase.php'];
+    private static $baseFiles = [APP_DIR . 'models/db/MBase.php', APP_DIR . 'helpers/Jsonx.php'];
 
     public static function loadBaseFiles()
     {
         foreach (Loader::$baseFiles as $path) {
-//            echo 'Base files'. $path."<br>";
             require_once($path);
         }
     }
@@ -26,7 +25,6 @@ class Loader
         if ($handle = opendir($dir)) {
             while (false !== ($entry = readdir($handle))) {
                 if ($entry != "." && $entry != ".." && strpos($entry, '.php') !== false && !in_array($dir . '/' . $entry, Loader::$baseFiles)) {
-//                    echo $dir . '/' . $entry . "<br>";
                     require_once($dir . '/' . $entry);
                 }
             }

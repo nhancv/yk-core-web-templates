@@ -6,6 +6,14 @@
  * Date: 5/9/16
  * Time: 12:45 PM
  */
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Max-Age: 1200');
+header("Content-Type: application/json;charset=UTF-8");
+header('X-Content-Type-Options:nosniff');
+header('X-Frame-Options:SAMEORIGIN');
+header('X-XSS-Protection:1; mode=block');
 class Controller
 {
 

@@ -14,20 +14,46 @@ class User extends Controller
         $template->render();
     }
 
+    function validUser()
+    {
+        try {
+            $userModel = UrlHelper::verifyHeader(false);
+            if (MBase::checkNullField($_POST["pid"])) throw new Exception("object null");
+            if (MBase::checkNullField($_POST["password"])) throw new Exception("object null");
+            $userList = $userModel->validUser($_POST["pid"], $_POST["password"]);
+            if (count($userList) == 0) {
+                throw new Exception("User not valid");
+            } else {
+                $response["data"] = array();
+                $user = $userList[0];
+                $user["password"] = "***password***is***fuck***";
+                array_push($response["data"], $user);
+                $response["status"] = 0;
+                $response["msg"] = "";
+                echo Jsonx::json_encode_utf8($response);
+            }
+        } catch (Exception $e) {
+            $response["status"] = 1;
+            $response["msg"] = $e->getMessage();
+            echo Jsonx::json_encode_utf8($response);
+        }
+    }
+
     function getUser()
     {
         try {
-            $userModel = new UserModel();
+            $userModel = UrlHelper::verifyHeader(true);
             $userList = $userModel->getAllUser();
             $response["data"] = array();
             foreach ($userList as &$user) {
                 array_push($response["data"], $user);
             }
             $response["status"] = 0;
+            $response["msg"] = "";
             echo Jsonx::json_encode_utf8($response);
         } catch (Exception $e) {
             $response["status"] = 1;
-            $response["msg"] = $e;
+            $response["msg"] = $e->getMessage();
             echo Jsonx::json_encode_utf8($response);
         }
     }
@@ -35,13 +61,11 @@ class User extends Controller
     function insertUser()
     {
         try {
-            $userModel = new UserModel();
-            if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST))
-                $_POST = Jsonx::json_decode_nice(file_get_contents('php://input'), true);
-            else throw new Exception ("check request method");
+            $userModel = UrlHelper::verifyHeader(true);
             if (MBase::checkNullField($_POST["pid"])) throw new Exception("object null");
             $user = Parsing::parsingNewUser($_POST);
             $res = $userModel->insertUser($user);
+            $response["uid"] = $user->getUid();
             $response["msg"] = $res;
             $response["status"] = 0;
             echo Jsonx::json_encode_utf8($response);
@@ -55,10 +79,7 @@ class User extends Controller
     function updateUser()
     {
         try {
-            $userModel = new UserModel();
-            if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST))
-                $_POST = Jsonx::json_decode_nice(file_get_contents('php://input'), true);
-            else throw new Exception ("check request method");
+            $userModel = UrlHelper::verifyHeader(true);
             if (MBase::checkNull($_POST)) throw new Exception("object null");
             $user = Parsing::parsingEditUser($_POST);
             $res = $userModel->updateUser($user);
@@ -75,10 +96,7 @@ class User extends Controller
     function deleteUser()
     {
         try {
-            $userModel = new UserModel();
-            if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST))
-                $_POST = Jsonx::json_decode_nice(file_get_contents('php://input'), true);
-            else throw new Exception ("check request method");
+            $userModel = UrlHelper::verifyHeader(true);
             if (MBase::checkNull($_POST)) throw new Exception("object null");
             $user = Parsing::parsingNewUser($_POST);
             $res = $userModel->deleteUser($user->getUid());
@@ -95,10 +113,7 @@ class User extends Controller
     function deleteMultiUser()
     {
         try {
-            $userModel = new UserModel();
-            if ($_SERVER['REQUEST_METHOD'] == 'POST' && empty($_POST))
-                $_POST = Jsonx::json_decode_nice(file_get_contents('php://input'), true);
-            else throw new Exception ("check request method");
+            $userModel = UrlHelper::verifyHeader(true);
             if (MBase::checkNullField($_POST["uid_arr"])) throw new Exception("object null");
             $res = $userModel->deleteMultiUser($_POST["uid_arr"]);
             $response["msg"] = $res;
@@ -110,7 +125,6 @@ class User extends Controller
             echo Jsonx::json_encode_utf8($response);
         }
     }
-
 
 
 }

@@ -18,11 +18,32 @@ class UserModel extends Model
         return $result;
     }
 
+    public function validToken($uid)
+    {
+        $result = $this->getUser($uid);
+        if (count($result) == 1) {
+            return true;
+        }
+        return false;
+    }
+
     public function getUser($uid)
     {
         $uid = $this->escapeString($uid);
         $sql = 'SELECT * FROM `User` WHERE
                 `uid`="' . $uid . '"
+                ';
+        $result = $this->query($sql);
+        return $result;
+    }
+
+    public function validUser($pid, $password)
+    {
+        $pid = $this->escapeString($pid);
+        $password = $this->escapeString($password);
+        $sql = 'SELECT * FROM `User` WHERE
+                `pid`="' . $pid . '" AND
+                `password`="' . $password . '"
                 ';
         $result = $this->query($sql);
         return $result;
